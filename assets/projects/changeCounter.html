@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Change Counter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="calculator">
+        <p>cost:</p>
+        <input type="number" id="costInput">
+        <p>amount given:</p>
+        <input type="number" id="amountGivenInput"><br>
+        <button type="button" onclick="parentFunction()">Calculate</button>
+        <p id="results"></p>
+    </div>
+<script>
+    //container Arrays
+        let denomRemainder = [];
+        let denomValues = ["", 2000, 1000, 500, 100, 25, 10, 5, 1];
+        let denomNeeded = [""]
+    //resets the arrays
+    function clear () {
+        denomNeeded = [""];
+        denomRemainder = [];
+    }
+    //defines values
+    function parentFunction(){
+        let computedCost = 100 * (parseFloat(document.getElementById("costInput").value));
+        let computedAmountGiven = 100 * (parseFloat(document.getElementById("amountGivenInput").value));
+        let changeNeeded = computedAmountGiven - computedCost;
+        clear()
+        denomRemainder.push(changeNeeded);
+        printChange();
+    }
+    //runs the find change function then prints the resulting values
+    function printChange (){
+        findChange();
+        document.getElementById("results").innerHTML = 
+            `Change Needed: $${denomRemainder[0] / 100}<br>
+            20 dollar bills Needed: ${denomNeeded[1]}<br>
+            10 dollar bills Needed: ${denomNeeded[2]}<br>
+            5 dollar bills Needed: ${denomNeeded[3]}<br>
+            Dollars Needed: ${denomNeeded[4]}<br>
+            Quarters Needed: ${denomNeeded[5]}<br>
+            Dimes Needed: ${denomNeeded[6]}<br>
+            Nickels Needed: ${denomNeeded[7]}<br>
+            Pennies Needed: ${denomNeeded[8]}`;
+            console.log(denomRemainder[0])
+    }
+    /*for loop that figures out if it needs to loop again based on the array length of denomValues and defined the valiable loopPosition 
+    to be used as the variable in the function calculate Change*/
+    function findChange (){
+        for(var loopPosition = 1; loopPosition < denomValues.length; loopPosition++){
+            calculateChange(loopPosition)
+        }
+    }
+    //does the actual math and pushes or defines values in the arrays
+    function calculateChange(x){
+        let calculateAmountOfDenom = Math.floor(denomRemainder[x-1]/denomValues[x]);
+        denomNeeded.push(calculateAmountOfDenom);
+        denomRemainder[x] = denomRemainder[x-1] - denomNeeded[x] * denomValues[x];
+    }
+</script>
+</body>
+</html>
